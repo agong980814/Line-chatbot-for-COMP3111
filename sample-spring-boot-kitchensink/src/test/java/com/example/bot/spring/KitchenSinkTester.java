@@ -67,7 +67,7 @@ public class KitchenSinkTester {
 		boolean thrown = false;
 		String result = null;
 		try {
-			result = this.databaseEngine.search("abc");
+			result = this.databaseEngine.search("Do you know what comes after abc?");
 		} catch (Exception e) {
 			thrown = true;
 		}

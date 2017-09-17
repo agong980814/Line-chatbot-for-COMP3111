@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 
 ////
@@ -34,11 +36,16 @@ public class DatabaseEngine {
 			br = new BufferedReader(isr);
 			String sCurrentLine;
 			
-			while (result != null && (sCurrentLine = br.readLine()) != null) {
+			while (result == null && (sCurrentLine = br.readLine()) != null) {
 				String[] parts = sCurrentLine.split(":");
+				/*
 				if (text.toLowerCase().equals(parts[0].toLowerCase())) {
 					result = parts[1];
 				}
+				*/
+				Matcher m = Pattern.compile(parts[0].toLowerCase()).matcher(text.toLowerCase());
+				if (m.find())
+					result = parts[1];
 			}
 		} catch (IOException e) {
 			log.info("IOException while reading file: {}", e.toString());
