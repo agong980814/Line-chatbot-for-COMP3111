@@ -46,16 +46,18 @@ import com.example.bot.spring.DatabaseEngine;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { KitchenSinkTester.class, DatabaseEngine.class })
+//@SpringBootTest(classes = { KitchenSinkTester.class, DatabaseEngine.class })
+@SpringBootTest(classes = { KitchenSinkTester.class, SQLDatabaseEngine.class })
 public class KitchenSinkTester {
 	@Autowired
-	private DatabaseEngine databaseEngine;
+	private SQLDatabaseEngine sqlDatabaseEngine;
+	// private DatabaseEngine databaseEngine;
 	
 	@Test
 	public void testNotFound() throws Exception {
 		boolean thrown = false;
 		try {
-			this.databaseEngine.search("no");
+			this.sqlDatabaseEngine.search("no");
 		} catch (Exception e) {
 			thrown = true;
 		}
@@ -63,33 +65,47 @@ public class KitchenSinkTester {
 	}
 	
 	@Test
-	public void testFound() throws Exception {
+	public void testWhatAreYouFound() throws Exception {
 		boolean thrown = false;
 		String result = null;
 		try {
-			result = this.databaseEngine.search("abc");
+			result = this.sqlDatabaseEngine.search("What are you");
 		} catch (Exception e) {
 			thrown = true;
 		}
-		assertThat(!thrown);
-		assertThat(result.equals("def"));
-		result = null;
+		assertThat(thrown).isEqualTo(false);
+		assertThat(result).isEqualTo("chatbot. You have hit this keyword for 1 time(s)!");
+		//assertThat(result).isEqualTo("chatbot");
+		//assertThat(result).isEqualTo(".0");
+	}
+	/*
+	@Test
+	public void testWhatIsYourNameFound() throws Exception {
+		boolean thrown = false;
+		String result = null;
 		try {
-			result = this.databaseEngine.search("Who say I am fine?");
+			result = this.sqlDatabaseEngine.search("What is your name?");
 		} catch (Exception e) {
 			thrown = true;
 		}
-		assertThat(!thrown);
-		assertThat(result.equals("Great!"));
-		result = null;
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("Lucis. You have hit this keyword for 0 time(s)!");
+		//assertThat(result).isEqualTo("Lucis");
+	}
+	@Test
+	public void testWhoDoYouLove() throws Exception {
+		boolean thrown = false;
+		String result = null;
 		try {
-			result = this.databaseEngine.search("I am fine?");
+			result = this.sqlDatabaseEngine.search("Who do you love?");
 		} catch (Exception e) {
 			thrown = true;
 		}
-		assertThat(!thrown);
-		assertThat(result.equals("Great!"));
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("Thomas. You have hit this keyword for 0 time(s)!");
+		//assertThat(result).isEqualTo("Thomas");
 		
 	}
+	*/
 	
 }

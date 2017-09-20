@@ -6,13 +6,84 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.net.URISyntaxException;
 import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 public class SQLDatabaseEngine extends DatabaseEngine {
+	private String databaseName = "chatbot";
+	private String [] col = {"keyword", "response", "hit"};
+
 	@Override
 	String search(String text) throws Exception {
 		//Write your code here
-		return null;
+		// NON partial
+		/*
+		try {
+			Connection connection = this.getConnection();
+			PreparedStatement stmt = connection.prepareStatement("SELECT response FROM chatbot WHERE keyword LIKE concat('%', ?, '%')");
+			stmt.setString(1,  text);
+			ResultSet rs = stmt.executeQuery();
+			if(!rs.next()) 
+				throw new Exception("NOT FOUND");
+			else {
+				String result = rs.getString(1);
+				rs.close();
+				stmt.close();
+				connection.close();
+				return result;
+			}
+		} catch (Exception e) {
+			System.out.print(e);
+		}
+		*/
+		// partial version
+		String result = null;
+		try {
+			Connection connection = this.getConnection();
+			//PreparedStatement stmt = connection.prepareStatement("SELECT " + col[0] + " FROM " + databaseName);
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM chatbot");
+			ResultSet rs = stmt.executeQuery();
+			if(!rs.next()) 
+				throw new Exception("NOT FOUND");
+			else do {
+				String keyword = rs.getString("keyword");
+				Matcher m = Pattern.compile(keyword.toLowerCase()).matcher(text.toLowerCase());
+				if (m.find()) {
+					//log.info("FOUND FOUND FOUND");
+					/*
+					PreparedStatement tempStmt = connection.prepareStatement("SELECT response, hit FROM chatbot WHERE keyword = '?'");
+					tempStmt.setString(1, keyword);
+					ResultSet tempRs = tempStmt.executeQuery();
+					if(rs.next())
+						//result = tempRs.getString(1) + ". You have hit this keyword for " + tempRs.getInt(2) + " time(s)!";
+						result = tempRs.getString(1);
+					tempStmt = connection.prepareStatement("UPDATE chatbot SET hit = ? WHERE keyword = '?'");
+					tempStmt.setInt(1, tempRs.getInt(2) + 1);
+					tempStmt.setString(2, keyword);
+					tempStmt.executeUpdate();
+					tempRs.close(); tempStmt.close(); connection.close();
+					*/
+					//try {rs.updateInt(3, rs.getInt(3) + 1);} catch (SQLException e) {throw e;}
+					int time = rs.getInt("hit") + 1;
+					rs.updateInt("hit", time);
+					rs.updateRow();
+					result = rs.getString("response") + ". You have hit this keyword for " + time + " time(s)!";
+					//result = "." + rs.getInt("hit");
+					//result = rs.getString("response");
+					rs.close(); stmt.close(); connection.close();
+					return result;
+				}
+			} while(rs.next());
+			rs.close(); stmt.close(); connection.close();
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		//return null;
+		if (result != null)
+			return result;
+		throw new Exception("NOT FOUND");
 	}
 	
 	
