@@ -63,7 +63,7 @@ public class KitchenSinkTester {
 		}
 		assertThat(thrown);
 	}
-	
+	/*
 	@Test
 	public void testWhatAreYouFound() throws Exception {
 		boolean thrown = false;
@@ -78,6 +78,7 @@ public class KitchenSinkTester {
 		assertThat(result).isEqualTo("chatbot");
 		//assertThat(result).isEqualTo(".0");
 	}
+	*/
 /*	
 	@Test
 	public void testWhatIsYourNameFound() throws Exception {
