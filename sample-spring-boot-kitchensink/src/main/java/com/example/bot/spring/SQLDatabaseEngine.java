@@ -50,20 +50,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 				String keyword = rs.getString("keyword");
 				Matcher m = Pattern.compile(keyword.toLowerCase()).matcher(text.toLowerCase());
 				if (m.find()) {
-					//log.info("FOUND FOUND FOUND");
-					/*
-					PreparedStatement tempStmt = connection.prepareStatement("SELECT response, hit FROM chatbot WHERE keyword = '?'");
-					tempStmt.setString(1, keyword);
-					ResultSet tempRs = tempStmt.executeQuery();
-					if(rs.next())
-						//result = tempRs.getString(1) + ". You have hit this keyword for " + tempRs.getInt(2) + " time(s)!";
-						result = tempRs.getString(1);
-					tempStmt = connection.prepareStatement("UPDATE chatbot SET hit = ? WHERE keyword = '?'");
-					tempStmt.setInt(1, tempRs.getInt(2) + 1);
-					tempStmt.setString(2, keyword);
-					tempStmt.executeUpdate();
-					tempRs.close(); tempStmt.close(); connection.close();
-					*/
+					
 					//try {rs.updateInt(3, rs.getInt(3) + 1);} catch (SQLException e) {throw e;}
 					int time = rs.getInt("hit") + 1;
 					//rs.updateInt("hit", time);
