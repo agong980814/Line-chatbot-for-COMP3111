@@ -317,7 +317,7 @@ public class KitchenSinkController {
 
 	public KitchenSinkController() {
 		//database = new DatabaseEngine();
-		database = new SQPDatabaseEngine();
+		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 	}
 
