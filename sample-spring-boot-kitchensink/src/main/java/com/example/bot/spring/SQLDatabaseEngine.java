@@ -53,8 +53,8 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 					
 					//try {rs.updateInt(3, rs.getInt(3) + 1);} catch (SQLException e) {throw e;}
 					int time = rs.getInt("hit") + 1;
-					rs.updateInt("hit", time);
-					rs.updateRow();
+					//rs.updateInt("hit", time);
+					//rs.updateRow();
 					result = rs.getString("response") + ". You have hit this keyword for " + time + " time(s)!";
 					//result = "." + rs.getInt("hit");
 					//result = rs.getString("response");
