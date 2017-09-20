@@ -53,11 +53,17 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 					
 					//try {rs.updateInt(3, rs.getInt(3) + 1);} catch (SQLException e) {throw e;}
 					int time = rs.getInt("hit") + 1;
-					//rs.updateInt("hit", time);
-					//rs.updateRow();
+					/*
+					int concurrency = rs.getConcurrency();
+					if (concurrency == ResultSet.CONCUR_UPDATABLE) {
+						rs.updateInt("hit", time);
+						rs.updateRow();
+					}
+					*/
+					PreparedStatement temp = connection.prepareStatement("UPDATE chatbot SET hit = ? WHERE keyword = '" + keyword + "'");
+					temp.setInt(1, time);
+					temp.executeUpdate();
 					result = rs.getString("response") + ". You have hit this keyword for " + time + " time(s)!";
-					//result = "." + rs.getInt("hit");
-					//result = rs.getString("response");
 					rs.close(); stmt.close(); connection.close();
 					return result;
 				}
@@ -86,6 +92,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		log.info ("dbUrl: {}", dbUrl);
 		
 		connection = DriverManager.getConnection(dbUrl, username, password);
+		connection.setReadOnly(false);
 
 		return connection;
 	}
