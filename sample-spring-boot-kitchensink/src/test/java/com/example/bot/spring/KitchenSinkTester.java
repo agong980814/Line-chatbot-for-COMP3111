@@ -74,7 +74,7 @@ public class KitchenSinkTester {
 			thrown = true;
 		}
 		assertThat(thrown).isEqualTo(false);
-		assertThat(result).isEqualTo("chatbot. You have hit this keyword for 1 time(s)!");
+		assertThat(result.startsWith("chatbot")).isEqualTo(true);
 		//assertThat(result).isEqualTo("chatbot");
 		//assertThat(result).isEqualTo(".0");
 	}
